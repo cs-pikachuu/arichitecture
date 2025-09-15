@@ -9,16 +9,20 @@ This project proposes a new algorithmic framework for creating unified and edita
 
 Together, these modules form an end-to-end modeling pipeline that unifies indoor and outdoor environments into a seamless, editable 3D representation.
 
-<div style="display: flex; justify-content: center; gap: 20px;">
+<div style="display: flex; justify-content: center; gap: 20px; text-align: center;">
 
-  <div style="text-align: center;">
+  <div>
     <img src="https://github.com/user-attachments/assets/a8162ad7-3f91-4354-bf10-014c869dc8da" width="400"/>
-    <div style="font-size: 12px; color: gray;">Result of SAM semantic segmentation on the building</div>
+    <div style="font-size: 12px; color: gray; text-align: center;">
+      Result of SAM semantic segmentation on the building
+    </div>
   </div>
 
-  <div style="text-align: center;">
+  <div>
     <img src="https://github.com/user-attachments/assets/48c11b72-ee5f-4dbe-820e-962a94346902" width="400"/>
-    <div style="font-size: 12px; color: gray;">Semantic segmentation results converted into semantic 3D point clouds using VGGT</div>
+    <div style="font-size: 12px; color: gray; text-align: center;">
+      Semantic segmentation results converted into semantic 3D point clouds using VGGT
+    </div>
   </div>
 
 </div>

@@ -9,7 +9,8 @@ This project proposes a new algorithmic framework for creating unified and edita
 
 Together, these modules form an end-to-end modeling pipeline that unifies indoor and outdoor environments into a seamless, editable 3D representation.
 
-<img width="716" height="471" alt="image" src="https://github.com/user-attachments/assets/a8162ad7-3f91-4354-bf10-014c869dc8da" />
-
-<img width="282" height="202" alt="image" src="https://github.com/user-attachments/assets/48c11b72-ee5f-4dbe-820e-962a94346902" />
+<div style="display: flex; justify-content: center; gap: 10px;">
+  <img src="https://github.com/user-attachments/assets/a8162ad7-3f91-4354-bf10-014c869dc8da" width="400"/>
+  <img src="https://github.com/user-attachments/assets/48c11b72-ee5f-4dbe-820e-962a94346902" width="400"/>
+</div>
 

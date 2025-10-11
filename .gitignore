@@ -3,3 +3,14 @@ modules/vggt/checkpoints/
 modules/sam2/checkpoints
 *.log
 *.tmp
+datasets/
+outputs/
+*.pt
+*.pth
+*.ckpt
+*.bin
+datasets/
+*.z01
+*.z*
+modules/*/checkpoints/
+outputs/

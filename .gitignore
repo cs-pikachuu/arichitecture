@@ -13,4 +13,10 @@ datasets/
 *.z01
 *.z*
 modules/*/checkpoints/
+outputs/datasets/
+*.z01
+*.z*
+modules/*/checkpoints/
 outputs/
+__pycache__/
+*.pyc

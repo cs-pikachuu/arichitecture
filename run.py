@@ -9,12 +9,29 @@ from accelerate.utils import ProjectConfiguration
 from accelerate import FullyShardedDataParallelPlugin
 from torchvision import transforms
 import torch
-
+from hydra import initialize_config_dir
+from hydra.core.global_hydra import GlobalHydra
 # ours code base
 from datasets.blended_mvs import BlendedMVS_Dataset
 from utils.helper import sam2_forward, vggt_forward
 
 import sys
+_CUR_DIR = os.path.dirname(__file__)
+_MODULES_DIR = os.path.abspath(os.path.join(_CUR_DIR, "modules"))
+if _MODULES_DIR not in sys.path:
+    sys.path.insert(0, _MODULES_DIR)
+
+# 如果缺 __init__.py，可以临时补（不会覆盖已有文件）
+for _pkg in ("vggt", "sam2"):
+    _init = os.path.join(_MODULES_DIR, _pkg, "__init__.py")
+    if not os.path.exists(_init):
+        try:
+            open(_init, "a").close()
+        except Exception:
+            pass
+
+
+
 base_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
 vggt_path = os.path.join(base_dir, "modules/vggt")
 sys.path.insert(0, vggt_path)
@@ -93,7 +110,12 @@ def parse_args():
             " flag passed with the `accelerate.launch` command. Use this argument to override the accelerate config."
         ),
     )
-
+    parser.add_argument(
+    "--gradient-accumulation-steps",
+    type=int,
+    default=1,            # 按需改默认
+    help="Number of steps to accumulate gradients before optimizer.step().",
+)
     parser.add_argument(
         "--report_to",
         type=str,
@@ -138,7 +160,27 @@ def main():
     sam2_predictor = SAM2ImagePredictor(build_sam2(sam2_model_cfg, sam2_checkpoint))
     sam2_predictor = sam2_predictor.to(accelerator.device)
     sam2_predictor.requires_grad_(False)
-    
+    # sam2_ckpt = os.path.join(_MODULES_DIR, "sam2", "checkpoints", "sam2.1_hiera_large.pt")
+    # cfg_dir   = os.path.join(_MODULES_DIR, "sam2", "configs")
+
+    # # 2) Hydra 的 config_name 必须是相对 configs/ 的“包内路径”，不要写成 .modules/...
+    # config_name = "sam2.1/sam2.1_hiera_l"   # 不要带前导点；不带 .yaml 更通用
+
+    # # 3) （可选）健壮性检查
+    # if not os.path.isfile(sam2_ckpt):
+    #     raise FileNotFoundError(f"Missing checkpoint: {sam2_ckpt}")
+    # if not os.path.isdir(cfg_dir):
+    #     raise FileNotFoundError(f"Missing config dir: {cfg_dir}")
+
+    # # 4) 设定 Hydra 的搜索根到本地 configs/
+    # if GlobalHydra.instance().is_initialized():
+    #     GlobalHydra.instance().clear()
+    # with initialize_config_dir(version_base=None, config_dir=cfg_dir):
+    #     sam2_model = build_sam2(config_name, sam2_ckpt)
+
+    # # 5) 构建 predictor 并放到设备上
+    # sam2_predictor = SAM2ImagePredictor(sam2_model).to(accelerator.device)
+    # sam2_predictor.requires_grad_(False)
     # vggt
     vggt_model = VGGT()
     vggt_state_dict = torch.load("./modules/vggt/checkpoints/model.pt", map_location=accelerator.device)

@@ -1,4 +1,5 @@
 datasets/blended_MVS
-
+modules/vggt/checkpoints/
+modules/sam2/checkpoints
 *.log
 *.tmp
